@@ -5,5 +5,5 @@ app_name = 'board'
 
 
 urlpatterns = [
-    
+    path('', views.BoardList.as_view(), name='list'),
 ]

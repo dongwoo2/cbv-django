@@ -7,4 +7,4 @@ from .models import Board
 
 class BoardList(generic.ListView):
     model = Board
-    ordering = ['-pk']
+    ordering = ['-pk'] # object_list = Board.objects.all().order_by()
