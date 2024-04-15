@@ -17,5 +17,5 @@
         </tr>
     {% endfor %}
 </table>        
-<a href="#"><button>글쓰기</button></a>
+<a href="{% url "board:create" %}"><button>글쓰기</button></a>
 {% endblock content %}

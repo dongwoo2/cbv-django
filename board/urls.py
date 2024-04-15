@@ -6,4 +6,5 @@ app_name = 'board'
 
 urlpatterns = [
     path('', views.BoardList.as_view(), name='list'),
+    path('create/', views.BoardCreate.as_view(), name='create'),
 ]
