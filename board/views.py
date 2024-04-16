@@ -22,3 +22,10 @@ class BoardCreate(generic.CreateView): # 생성하는데 사용, 앱이름/board
     
 class BoardDetail(generic.DetailView):
     model = Board
+    
+    # 조회수 증가 기능 적용
+    def get_object(self, queryset=None): # 재정의
+        item = super().get_object(queryset)
+        item.increment_read_count()
+        return item
+        
