@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.BoardList.as_view(), name='list'),
     path('create/', views.BoardCreate.as_view(), name='create'),
     path('<int:pk>/detail/', views.BoardDetail.as_view(), name='detail'),
+    path('<int:pk>/edit/', views.BoardUpdate.as_view(), name='edit'),
 ]
