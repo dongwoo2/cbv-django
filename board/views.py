@@ -50,3 +50,8 @@ class BoardUpdate(generic.UpdateView):
             context["button_label"] = '수정'
             return context
         
+        
+class BoardDelete(generic.DeleteView):
+    model = Board
+    success_url = reverse_lazy('board:list')
+        
