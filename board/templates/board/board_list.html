@@ -18,4 +18,79 @@
     {% endfor %}
 </table>        
 <a href="{% url "board:create" %}"><button>글쓰기</button></a>
+<p>
+    {% if is_paginated %}
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.next_page_number}}">&laquo;</a>
+        {% endif %}
+        {% if page_obj.number == paginator.num_pages %}
+            <a href="?page={{ page_obj.number|add:"-2"}}">[ {{ page_obj.number|add:"-2"}}]</a>
+        {% endif %}
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+            <span style="color:red">[{{ i }}]</span>
+            {% elif i > page_obj.number|add:"-2" and i < page_obj.number|add:"2" %}
+            <a href="?page{{ i }}">[{{ i }}]</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.number == 1 %}
+            <a href="?page={{ page_obj.end_index }}">[{{ page_obj.end_index }}]</a>
+        {% endif %}
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+        {% endif %}
+    {% endif %}
+</p>
+<hr>
+<h5>페이징 처리 관련 값 참조(paginator, page_obj)</h5>
+<table border="1">
+    <tr>
+        <th>속성</th>
+        <th>값</th>
+        <th>설명</th>
+    </tr>
+    <tr>
+        <td>paginator.num_pages</td>
+        <td>{{ paginator.num_pages }}</td>
+        <td>전체 페이지 수</td>
+    </tr>
+    <tr>
+        <td>paginator.page_range</td>
+        <td>{{ paginator.page_range }}</td>
+        <td>페이지의 범위(range(1, num_pages + 1)과 동일)</td>
+    </tr>
+    <tr>
+        <td>page_obj.has_next</td>
+        <td>{{ page_obj.has_next }}</td>
+        <td>다음 페이지 존재 여부</td>
+    </tr>
+    {% if page_obj.has_next %}
+    <tr>
+        <td>page_obj.next_page_number</td>
+        <td>{{ page_obj.next_page_number }}</td>
+        <td>다음 페이지 번호</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td>page_obj.has_previous</td>
+        <td>{{ page_obj.has_previous }}</td>
+        <td>이전 페이지 존재 여부</td>
+    </tr>
+    {% if page_obj.has_previous %}
+    <tr>
+        <td>page_obj.next_page_number</td>
+        <td>{{ page_obj.next_page_number }}</td>
+        <td>이전 페이지 번호</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td>page_obj.start_index</td>
+        <td>{{ page_obj.start_index }}</td>
+        <td>현재 페이지에서 첫 번째 객체의 1-based index를 반환</td>
+    </tr>
+    <tr>
+        <td>page_obj.end_index</td>
+        <td>{{ page_obj.end_index }}</td>
+        <td>현재 페이지에서 마지막 객체의 1-based index를 반환</td>
+    </tr>
 {% endblock content %}

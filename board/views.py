@@ -9,6 +9,9 @@ class BoardList(generic.ListView):
     model = Board
     ordering = ['-pk'] # object_list = Board.objects.all().order_by()
     
+    # 페이징
+    paginate_by = 3
+    
     
 from .forms import BoardForm
 from django.urls import reverse_lazy
