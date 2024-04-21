@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,12 +6,19 @@ from django.shortcuts import render
 from django.views import generic
 from .models import Board
 
+from .forms import BoardSearchForm
+
 class BoardList(generic.ListView):
     model = Board
     ordering = ['-pk'] # object_list = Board.objects.all().order_by()
     
     # 페이징
     paginate_by = 3
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_form'] = BoardSearchForm() # 파라미터 추가
+        return context
     
     
 from .forms import BoardForm
@@ -23,8 +31,8 @@ class BoardCreate(generic.CreateView): # 생성하는데 사용, 앱이름/board
     success_url = reverse_lazy('board:list') # 클래스는 실행되기전에 미리 메모리상에 로딩이 되는데 미리 url을 뽑아낼 수 없으니 얘는 로딩이되면 그 떄 서야 하겠다는 예약같은 함수
     
     def get_context_data(self, **kwargs): 
-        context = super().get_context_data(**kwargs)
-        context["button_label"] = '등록'
+        context = super().get_context_data(**kwargs) # 부모가 가지고 있는 기존 컨텍스트 정보
+        context["button_label"] = '등록' # 새로운 값 추가
         return context
     
     
@@ -50,11 +58,33 @@ class BoardUpdate(generic.UpdateView):
     
     def get_context_data(self, **kwargs: any) -> dict[str, any]: # > dict[str, any] 는 반환자료형이 무엇인지 명시해주는 것 글등록에 있는 함수처럼 없어도 무관함
             context = super().get_context_data(**kwargs)
-            context["button_label"] = '수정'
+            context["button_label"] = '수정' # 파라미터를 추가해주는 것
             return context
         
         
 class BoardDelete(generic.DeleteView):
     model = Board
     success_url = reverse_lazy('board:list')
+    
+from django.db.models import Q # or 연산
+
+class BoardSearch(generic.ListView):
+    model = Board
+    paginate_by = 3
+    object_list_count = 0
+    
+    def get_queryset(self):
+        keyword = self.request.GET.get('keyword')
+        if keyword:
+            object_list = Board.objects.filter(
+                Q(title__icontains=keyword) | # or
+                Q(content__icontains=keyword)
+            ).order_by('-pk')
+            self.object_list_size = object_list.count()
+            return object_list
+        else:
+            return Board.objects.none()
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         

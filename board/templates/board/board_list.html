@@ -1,6 +1,18 @@
 {% extends "board/base.html" %}
 {% block title %}목록{% endblock title %}
 {% block content %}
+<div> <!--이 영역에 class 주고 디자인 적용가능 -->
+<form action="{% url "board:search" %}">
+    {{ search_form }}
+    <button type="submit">검색</button>
+</form>
+{% if object_list_size %}
+<p>
+    검색 결과({{object_list_size}}개 찾음)
+    <a href="{% url "board:list" %}"><button>목록으로</button></a>
+</p>
+{% endif %}
+</div>
 <table border="1">
     <tr>
         <th>번호</th>
