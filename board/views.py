@@ -87,4 +87,9 @@ class BoardSearch(generic.ListView):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['search_form'] = BoardSearchForm()
+        context['keyword'] = self.request.GET.get('keyword')
+        context['object_list_size'] = self.object_list_size
+        return context
+        
         
