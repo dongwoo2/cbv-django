@@ -10,5 +10,7 @@ urlpatterns = [
     path('<int:pk>/detail/', views.BoardDetail.as_view(), name='detail'),
     path('<int:pk>/edit/', views.BoardUpdate.as_view(), name='edit'),
     path('<int:pk>/remove/', views.BoardDelete.as_view(), name='remove'),
+    
+    path('search/', views.BoardSearch.as_view(), name='search'),
 ]
 
